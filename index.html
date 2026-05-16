@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Career Compass — Your Growth Command Center</title>
+<meta name="description" content="Discover opportunities, build your LinkedIn presence, and get weekly nudges to stay visible.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="src/css/styles.css">
+</head>
+<body>
+
+<!-- HERO HEADER -->
+<header class="hero">
+  <div class="hero-badge">✦ Career Compass</div>
+  <h1>Your <span>Career Growth</span><br>Command Center</h1>
+  <p>Discover opportunities, build your LinkedIn presence, and get weekly nudges to stay visible.</p>
+</header>
+
+<!-- NAV TABS -->
+<nav class="nav-strip" role="tablist">
+  <button class="nav-tab active" role="tab" aria-selected="true" onclick="switchTab('profile', this)">
+    <i class="fa-solid fa-user-tie" aria-hidden="true"></i>
+    Profile
+  </button>
+  <button class="nav-tab" role="tab" aria-selected="false" onclick="switchTab('opportunities', this)">
+    <i class="fa-solid fa-briefcase" aria-hidden="true"></i>
+    Roles
+  </button>
+  <button class="nav-tab" role="tab" aria-selected="false" onclick="switchTab('linkedin', this)">
+    <i class="fa-brands fa-linkedin" aria-hidden="true"></i>
+    LinkedIn
+  </button>
+  <button class="nav-tab" role="tab" aria-selected="false" onclick="switchTab('planner', this)">
+    <i class="fa-solid fa-calendar-week" aria-hidden="true"></i>
+    Planner
+  </button>
+  <button class="nav-tab" role="tab" aria-selected="false" onclick="switchTab('score', this)">
+    <i class="fa-solid fa-chart-line" aria-hidden="true"></i>
+    Progress
+  </button>
+</nav>
+
+<!-- MAIN CONTENT -->
+<main class="app-body">
+
+  <!-- PROFILE TAB -->
+  <section class="section active" id="tab-profile" role="tabpanel" aria-labelledby="tab-profile-btn">
+    <p class="form-title">Tell us about yourself</p>
+    <p class="form-sub">We'll use this to find matching roles and craft your LinkedIn strategy.</p>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="user-name">Your Name</label>
+        <input type="text" id="user-name" placeholder="Alex Johnson" oninput="updateName()" autocomplete="name">
+      </div>
+      <div class="form-group">
+        <label for="current-title">Current Title</label>
+        <input type="text" id="current-title" placeholder="e.g. Product Manager">
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="industry">Industry</label>
+        <select id="industry">
+          <option value="">Select industry</option>
+          <option>Technology &amp; Software</option>
+          <option>Finance &amp; Fintech</option>
+          <option>Healthcare &amp; Biotech</option>
+          <option>Marketing &amp; Growth</option>
+          <option>Consulting &amp; Strategy</option>
+          <option>Operations &amp; Supply Chain</option>
+          <option>Creative &amp; Design</option>
+          <option>Data &amp; Analytics</option>
+          <option>Legal &amp; Compliance</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="experience">Years of Experience</label>
+        <select id="experience">
+          <option value="">Select</option>
+          <option>0–2 years (Early Career)</option>
+          <option>3–5 years (Mid Level)</option>
+          <option>6–10 years (Senior)</option>
+          <option>10+ years (Leadership)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="target-role">Target Role</label>
+      <input type="text" id="target-role" placeholder="e.g. VP of Product, Chief of Staff, AI Consultant...">
+    </div>
+
+    <div class="form-group">
+      <label>Your Top Skills <span class="label-hint">(select all that apply)</span></label>
+      <div class="skill-tags" id="skill-tags">
+        <button class="skill-tag" onclick="toggleSkill(this)">Leadership</button>
+        <button class="skill-tag" onclick="toggleSkill(this)">Strategy</button>
+        <button class="skill-tag" onclick="toggleSkill(this)">Data Analysis</button>
+        <button class="skill-tag" onclick="toggleSkill(this)">Python / SQL</button>
+        <button class="skill-tag" onclick="toggleSkill(this)">Product Management</button>
+        <button class="skill-tag" onclick="toggleSkill(this)">UX / Design</button>
+        <button class="skill-tag" onclick="toggleSkill(this)">Sales &amp; BD</button>
+        <button class="skill-tag" onclick="toggleSkill(this)">Machine Learning</button>
+        <button class="skill-tag" onclick="toggleSkill(this)">Finance &amp; Modeling</button>
+        <button class="skill-tag" onclick="toggleSkill(this)">Content Creation</button>
+        <button class="skill-tag" onclick="toggleSkill(this)">Public Speaking</button>
+        <button class="skill-tag" onclick="toggleSkill(this)">Project Management</button>
+        <button class="skill-tag" onclick="toggleSkill(this)">Stakeholder Mgmt</button>
+        <button class="skill-tag" onclick="toggleSkill(this)">Engineering</button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="career-goal">Career Goal <span class="label-hint">(in your own words)</span></label>
+      <textarea id="career-goal" placeholder="e.g. I want to transition from operations into a strategic consulting role within 2 years..."></textarea>
+    </div>
+
+    <button class="btn-primary" onclick="analyzeProfile()">
+      <i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i>
+      Analyze My Profile &amp; Find Opportunities
+    </button>
+
+    <div class="ai-box" id="profile-ai-box" aria-live="polite" aria-label="AI Career Insight">
+      <div class="ai-box-header"><i class="fa-solid fa-star" aria-hidden="true"></i> AI Career Insight</div>
+      <div class="ai-content" id="profile-ai-content"></div>
+    </div>
+  </section>
+
+  <!-- OPPORTUNITIES TAB -->
+  <section class="section" id="tab-opportunities" role="tabpanel">
+    <div class="section-header">
+      <h2>Matched Opportunities</h2>
+      <button class="link-btn" onclick="refreshOpps()">↻ Refresh</button>
+    </div>
+
+    <div class="tip-chip"><i class="fa-solid fa-lightbulb" aria-hidden="true"></i> Based on your profile — update it to refine matches</div>
+
+    <div id="opps-container">
+      <article class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Senior Product Manager</div>
+            <div class="card-sub">Growth-stage SaaS · $140–$180K</div>
+          </div>
+          <span class="opp-badge hot">🔥 Hot</span>
+        </div>
+        <p class="card-body-text">Leading product strategy for a B2B analytics platform. Requires 5+ years PM experience and strong data intuition.</p>
+        <div class="match-bar-wrap">
+          <span class="match-label">Profile match</span>
+          <div class="match-bar-bg"><div class="match-bar-fill" style="width:88%"></div></div>
+          <span class="match-pct">88%</span>
+        </div>
+        <div class="card-actions">
+          <button class="btn-secondary" onclick="getAIAdvice('Senior Product Manager at a growth SaaS company')">AI Advice ↗</button>
+          <button class="btn-secondary linkedin-btn">LinkedIn Search ↗</button>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Chief of Staff</div>
+            <div class="card-sub">Series B Startup · $120–$160K</div>
+          </div>
+          <span class="opp-badge good">✓ Great Fit</span>
+        </div>
+        <p class="card-body-text">Bridge between founder and teams. Strategy, ops, and cross-functional leadership in a fast-scaling environment.</p>
+        <div class="match-bar-wrap">
+          <span class="match-label">Profile match</span>
+          <div class="match-bar-bg"><div class="match-bar-fill" style="width:74%"></div></div>
+          <span class="match-pct">74%</span>
+        </div>
+        <div class="card-actions">
+          <button class="btn-secondary" onclick="getAIAdvice('Chief of Staff at a Series B startup')">AI Advice ↗</button>
+          <button class="btn-secondary linkedin-btn">LinkedIn Search ↗</button>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">AI Strategy Consultant</div>
+            <div class="card-sub">Big 4 / Boutique Firms · $130–$200K</div>
+          </div>
+          <span class="opp-badge explore">Explore</span>
+        </div>
+        <p class="card-body-text">Help enterprises adopt AI. Blend of product, data, and client-facing skills valued highly.</p>
+        <div class="match-bar-wrap">
+          <span class="match-label">Profile match</span>
+          <div class="match-bar-bg"><div class="match-bar-fill" style="width:62%"></div></div>
+          <span class="match-pct">62%</span>
+        </div>
+        <div class="card-actions">
+          <button class="btn-secondary" onclick="getAIAdvice('AI Strategy Consultant at Big 4 firms')">AI Advice ↗</button>
+          <button class="btn-secondary linkedin-btn">LinkedIn Search ↗</button>
+        </div>
+      </article>
+    </div>
+
+    <div class="ai-box" id="opps-ai-box" aria-live="polite">
+      <div class="ai-box-header"><i class="fa-solid fa-star" aria-hidden="true"></i> AI Career Advice</div>
+      <div class="ai-content" id="opps-ai-content"></div>
+    </div>
+  </section>
+
+  <!-- LINKEDIN TAB -->
+  <section class="section" id="tab-linkedin" role="tabpanel">
+    <div class="section-header">
+      <h2>LinkedIn Content Studio</h2>
+    </div>
+    <p class="form-sub">Choose a content format. AI will generate a ready-to-post piece tailored to your profile.</p>
+
+    <div class="post-type-grid">
+      <button class="post-type-card" onclick="selectPostType(this, 'post')">
+        <i class="fa-regular fa-note-sticky" aria-hidden="true"></i>
+        <span>Short Post</span>
+        <small>Insight · Story · Take</small>
+      </button>
+      <button class="post-type-card" onclick="selectPostType(this, 'article')">
+        <i class="fa-regular fa-newspaper" aria-hidden="true"></i>
+        <span>LinkedIn Article</span>
+        <small>Deep-dive · Thought leadership</small>
+      </button>
+      <button class="post-type-card" onclick="selectPostType(this, 'newsletter')">
+        <i class="fa-regular fa-envelope-open" aria-hidden="true"></i>
+        <span>Newsletter</span>
+        <small>Weekly edition</small>
+      </button>
+      <button class="post-type-card" onclick="selectPostType(this, 'carousel')">
+        <i class="fa-regular fa-images" aria-hidden="true"></i>
+        <span>Carousel Hook</span>
+        <small>Slide 1 hook text</small>
+      </button>
+    </div>
+
+    <div class="form-group">
+      <label for="post-topic">Topic or Angle <span class="label-hint">(optional)</span></label>
+      <input type="text" id="post-topic" placeholder="e.g. Lessons from my career pivot, AI in product, hidden job market...">
+    </div>
+
+    <button class="btn-primary" onclick="generatePost()">
+      <i class="fa-solid fa-pen-nib" aria-hidden="true"></i>
+      Generate LinkedIn Content
+    </button>
+
+    <div class="generated-post" id="generated-post" aria-live="polite">
+      <button class="copy-btn" onclick="copyPost()" aria-label="Copy post to clipboard">
+        <i class="fa-regular fa-copy" aria-hidden="true"></i> Copy
+      </button>
+      <div class="post-header">
+        <div class="post-avatar" id="post-avatar" aria-hidden="true">A</div>
+        <div>
+          <div class="post-author-name" id="post-name">Alex Johnson</div>
+          <div class="post-meta">Posting to LinkedIn</div>
+        </div>
+      </div>
+      <div class="post-text" id="post-content"></div>
+      <div class="post-tags" id="post-hashtags"></div>
+    </div>
+  </section>
+
+  <!-- PLANNER TAB -->
+  <section class="section" id="tab-planner" role="tabpanel">
+    <div class="section-header">
+      <h2>Weekly Nudge Planner</h2>
+    </div>
+
+    <div class="week-grid" id="week-grid" aria-label="Week calendar"></div>
+
+    <hr class="divider">
+
+    <p class="subsection-label">This Week's Actions</p>
+
+    <div class="nudge-card">
+      <div class="nudge-icon" aria-hidden="true"><i class="fa-brands fa-linkedin"></i></div>
+      <div class="nudge-body">
+        <div class="nudge-title">Post a short insight (Mon)</div>
+        <div class="nudge-desc">Share a 150-word lesson from a recent work challenge. Authenticity gets 3× more engagement.</div>
+        <div class="nudge-due">📅 Due Monday</div>
+      </div>
+      <button class="done-btn" onclick="markDone(this)" aria-label="Mark as done">✓ Done</button>
+    </div>
+
+    <div class="nudge-card">
+      <div class="nudge-icon" aria-hidden="true"><i class="fa-solid fa-handshake"></i></div>
+      <div class="nudge-body">
+        <div class="nudge-title">Connect with 5 people in target industry</div>
+        <div class="nudge-desc">Send personalized notes — reference something specific from their profile or post.</div>
+        <div class="nudge-due">📅 Due Wednesday</div>
+      </div>
+      <button class="done-btn" onclick="markDone(this)" aria-label="Mark as done">✓ Done</button>
+    </div>
+
+    <div class="nudge-card">
+      <div class="nudge-icon" aria-hidden="true"><i class="fa-solid fa-comment-dots"></i></div>
+      <div class="nudge-body">
+        <div class="nudge-title">Comment on 3 industry leader posts</div>
+        <div class="nudge-desc">Thoughtful comments put you in front of thousands. Add your unique perspective, not just "Great post!"</div>
+        <div class="nudge-due">📅 Due Thursday</div>
+      </div>
+      <button class="done-btn" onclick="markDone(this)" aria-label="Mark as done">✓ Done</button>
+    </div>
+
+    <div class="nudge-card">
+      <div class="nudge-icon" aria-hidden="true"><i class="fa-solid fa-user-pen"></i></div>
+      <div class="nudge-body">
+        <div class="nudge-title">Update LinkedIn headline &amp; About (Fri)</div>
+        <div class="nudge-desc">Your headline is prime real estate. Formula: Role · Superpower · Who you help.</div>
+        <div class="nudge-due">📅 Due Friday</div>
+      </div>
+      <button class="done-btn" onclick="markDone(this)" aria-label="Mark as done">✓ Done</button>
+    </div>
+
+    <div class="nudge-card">
+      <div class="nudge-icon" aria-hidden="true"><i class="fa-regular fa-newspaper"></i></div>
+      <div class="nudge-body">
+        <div class="nudge-title">Draft next week's newsletter intro</div>
+        <div class="nudge-desc">15 minutes this weekend saves 2 hours Monday morning. Use Content Studio to draft it.</div>
+        <div class="nudge-due">📅 Due Sunday</div>
+      </div>
+      <button class="done-btn" onclick="markDone(this)" aria-label="Mark as done">✓ Done</button>
+    </div>
+
+    <hr class="divider">
+
+    <button class="btn-primary" onclick="generateWeeklyPlan()">
+      <i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i>
+      AI: Generate a Personalized Weekly Plan
+    </button>
+
+    <div class="ai-box" id="planner-ai-box" aria-live="polite">
+      <div class="ai-box-header"><i class="fa-solid fa-star" aria-hidden="true"></i> Your Personalized Weekly Plan</div>
+      <div class="ai-content" id="planner-ai-content"></div>
+    </div>
+  </section>
+
+  <!-- PROGRESS TAB -->
+  <section class="section" id="tab-score" role="tabpanel">
+    <div class="section-header">
+      <h2>Visibility Score</h2>
+    </div>
+
+    <div class="score-ring-wrap">
+      <div class="score-ring" role="img" aria-label="Visibility score: 64 out of 100">
+        <svg viewBox="0 0 88 88" width="88" height="88" aria-hidden="true">
+          <circle cx="44" cy="44" r="36" fill="none" stroke="#F0E9D8" stroke-width="8"/>
+          <circle cx="44" cy="44" r="36" fill="none" stroke="#C9A84C" stroke-width="8"
+            stroke-dasharray="226" stroke-dashoffset="80" stroke-linecap="round"
+            transform="rotate(-90 44 44)"/>
+        </svg>
+        <div class="score-center">
+          <div class="score-num">64</div>
+          <div class="score-label">/ 100</div>
+        </div>
+      </div>
+      <div class="score-desc">
+        <h3>Growing Steadily 📈</h3>
+        <p>You're in the top 35% of professionals actively building their brand. 3 key actions this week could push you to 80+.</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+    <p class="subsection-label">Breakdown</p>
+
+    <div class="progress-item">
+      <div class="progress-item-icon" style="background:#EBF5FB;color:#1A5276;" aria-hidden="true">
+        <i class="fa-brands fa-linkedin"></i>
+      </div>
+      <div class="progress-item-label">
+        <span>Profile Completeness</span>
+        <small>Headline, About, Skills, Photo</small>
+        <div class="mini-bar-bg"><div class="mini-bar-fill" style="width:80%"></div></div>
+      </div>
+      <span class="progress-pct" aria-label="80 percent">80%</span>
+    </div>
+
+    <div class="progress-item">
+      <div class="progress-item-icon" style="background:#FDEBD0;color:#784212;" aria-hidden="true">
+        <i class="fa-solid fa-pen-nib"></i>
+      </div>
+      <div class="progress-item-label">
+        <span>Posting Consistency</span>
+        <small>Weekly posts in last 30 days</small>
+        <div class="mini-bar-bg"><div class="mini-bar-fill" style="width:50%"></div></div>
+      </div>
+      <span class="progress-pct" aria-label="50 percent">50%</span>
+    </div>
+
+    <div class="progress-item">
+      <div class="progress-item-icon" style="background:#EAFAF1;color:#1E8449;" aria-hidden="true">
+        <i class="fa-solid fa-users"></i>
+      </div>
+      <div class="progress-item-label">
+        <span>Network Growth</span>
+        <small>Connections added this month</small>
+        <div class="mini-bar-bg"><div class="mini-bar-fill" style="width:55%"></div></div>
+      </div>
+      <span class="progress-pct" aria-label="55 percent">55%</span>
+    </div>
+
+    <div class="progress-item">
+      <div class="progress-item-icon" style="background:#F4ECF7;color:#6C3483;" aria-hidden="true">
+        <i class="fa-solid fa-comment"></i>
+      </div>
+      <div class="progress-item-label">
+        <span>Engagement Activity</span>
+        <small>Comments, reactions, shares</small>
+        <div class="mini-bar-bg"><div class="mini-bar-fill" style="width:40%"></div></div>
+      </div>
+      <span class="progress-pct" aria-label="40 percent">40%</span>
+    </div>
+
+    <div class="progress-item">
+      <div class="progress-item-icon" style="background:#FDEDEC;color:#922B21;" aria-hidden="true">
+        <i class="fa-solid fa-briefcase"></i>
+      </div>
+      <div class="progress-item-label">
+        <span>Role Applications</span>
+        <small>Applied to matched opportunities</small>
+        <div class="mini-bar-bg"><div class="mini-bar-fill" style="width:70%"></div></div>
+      </div>
+      <span class="progress-pct" aria-label="70 percent">70%</span>
+    </div>
+
+    <hr class="divider">
+
+    <button class="btn-primary" onclick="getGrowthTips()">
+      <i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i>
+      AI: What Should I Focus on Next?
+    </button>
+
+    <div class="ai-box" id="score-ai-box" aria-live="polite">
+      <div class="ai-box-header"><i class="fa-solid fa-star" aria-hidden="true"></i> AI Growth Coaching</div>
+      <div class="ai-content" id="score-ai-content"></div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="app-footer">
+  <p>Career Compass · Built with Claude AI · <a href="https://github.com/amantalwar04/career-compass" target="_blank" rel="noopener">GitHub</a></p>
+</footer>
+
+<script src="src/js/app.js"></script>
+</body>
+</html>

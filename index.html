@@ -178,10 +178,17 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text-p
 
     <div class="setup-banner" id="setup-banner">
       <strong>⚙️ One-time setup required</strong>
-      Enter your Cloudflare Worker URL below to enable AI features. See <a href="https://github.com/amantalwar04/career-compass#setup" target="_blank">README → Setup</a> for the 5-minute guide.
+      Paste your Cloudflare Worker URL below to activate AI features. The worker cascades across providers automatically — <b>Anthropic → OpenRouter → Gemini → OpenAI</b> — so you never hit a dead end.
+      See <a href="https://github.com/amantalwar04/career-compass#setup" target="_blank" style="color:#3d2b00;font-weight:600">README → Setup (5 min)</a> for the full guide.
       <div style="margin-top:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
         <input type="url" id="worker-url" placeholder="https://career-compass-proxy.YOUR-NAME.workers.dev" style="flex:1;min-width:200px;padding:8px 12px;border:1px solid #d4a017;border-radius:6px;font-size:13px;font-family:'DM Sans',sans-serif">
         <button onclick="saveWorkerUrl()" style="padding:8px 16px;background:#0F1B2D;color:#C9A84C;border:1px solid #8C6F2A;border-radius:6px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer">Save</button>
+      </div>
+      <div style="margin-top:10px;display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:6px;font-size:11px">
+        <div style="background:rgba(0,0,0,0.05);border-radius:5px;padding:5px 8px"><b>1st</b> Anthropic Claude<br><span style="color:#7a6000">Best quality</span></div>
+        <div style="background:rgba(0,0,0,0.05);border-radius:5px;padding:5px 8px"><b>2nd</b> OpenRouter<br><span style="color:#7a6000">Same model, 2nd pool</span></div>
+        <div style="background:rgba(0,0,0,0.05);border-radius:5px;padding:5px 8px"><b>3rd</b> Google Gemini<br><span style="color:#2d6a4f;font-weight:600">Free tier ✨</span></div>
+        <div style="background:rgba(0,0,0,0.05);border-radius:5px;padding:5px 8px"><b>4th</b> OpenAI GPT-4o<br><span style="color:#7a6000">Last resort</span></div>
       </div>
     </div>
 

@@ -8,60 +8,195 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<link rel="stylesheet" href="styles.css">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --gold:#C9A84C;--gold-light:#F5E6C0;--gold-dark:#8C6F2A;
+  --navy:#0F1B2D;--navy-mid:#1A2E47;--navy-light:#243D5C;
+  --cream:#FAF6EE;--cream-dark:#F0E9D8;
+  --text-primary:#0F1B2D;--text-secondary:#4A5568;--text-muted:#718096;
+  --success:#2D6A4F;--success-bg:#D8F3DC;--warn:#7B5800;--warn-bg:#FFF3CD;
+  --border:rgba(201,168,76,0.2);--border-strong:rgba(201,168,76,0.4);
+  --radius-sm:6px;--radius-md:10px;--radius-lg:14px;
+  --shadow-sm:0 1px 4px rgba(15,27,45,0.08);--shadow-md:0 4px 16px rgba(15,27,45,0.12);
+  --transition:0.2s ease;--max-width:700px
+}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text-primary);min-height:100vh;overflow-x:hidden;line-height:1.6}
+.hero{background:var(--navy);padding:2.5rem 1.5rem 2rem;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-60px;left:-60px;width:220px;height:220px;border:1px solid rgba(201,168,76,0.12);border-radius:50%;pointer-events:none}
+.hero::after{content:'';position:absolute;bottom:-80px;right:-40px;width:280px;height:280px;border:1px solid rgba(201,168,76,0.08);border-radius:50%;pointer-events:none}
+.hero-badge{display:inline-block;background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.3);color:var(--gold);font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:1rem}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,5vw,2.2rem);color:#fff;line-height:1.2;margin-bottom:.6rem}
+.hero h1 span{color:var(--gold)}
+.hero p{color:rgba(255,255,255,0.6);font-size:14px;font-weight:300;max-width:420px;margin:0 auto}
+.nav-strip{display:flex;background:var(--navy-mid);border-top:1px solid rgba(201,168,76,0.15);overflow-x:auto;scrollbar-width:none;position:sticky;top:0;z-index:100}
+.nav-strip::-webkit-scrollbar{display:none}
+.nav-tab{flex:1;min-width:70px;display:flex;flex-direction:column;align-items:center;gap:4px;padding:12px 6px;cursor:pointer;color:rgba(255,255,255,0.45);font-size:10px;font-weight:500;letter-spacing:.5px;text-transform:uppercase;border:none;border-bottom:2px solid transparent;background:transparent;transition:all var(--transition);font-family:'DM Sans',sans-serif;white-space:nowrap}
+.nav-tab i{font-size:16px}
+.nav-tab:hover{color:rgba(255,255,255,0.75)}
+.nav-tab.active{color:var(--gold);border-bottom-color:var(--gold);background:rgba(201,168,76,0.08)}
+.app-body{max-width:var(--max-width);margin:0 auto}
+.section{display:none;padding:1.5rem}
+.section.active{display:block}
+.form-title{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--navy);margin-bottom:.25rem}
+.form-sub{font-size:13px;color:var(--text-muted);margin-bottom:1.25rem;line-height:1.5}
+.form-group{margin-bottom:1rem}
+.form-group label{display:block;font-size:12px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px}
+.label-hint{font-size:11px;font-weight:400;text-transform:none;letter-spacing:0;color:var(--text-muted)}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:10px 14px;border:1px solid var(--border-strong);border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text-primary);background:#fff;outline:none;transition:border var(--transition),box-shadow var(--transition);-webkit-appearance:none;appearance:none}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,0.12)}
+.form-group textarea{resize:vertical;min-height:88px}
+.form-group select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23718096' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:36px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:480px){.form-row{grid-template-columns:1fr}}
+.skill-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.skill-tag{background:var(--gold-light);border:1px solid var(--border-strong);color:var(--gold-dark);font-size:12px;font-weight:500;padding:5px 13px;border-radius:20px;cursor:pointer;transition:all var(--transition);font-family:'DM Sans',sans-serif;user-select:none}
+.skill-tag.selected{background:var(--navy);border-color:var(--navy);color:var(--gold)}
+.skill-tag:hover{transform:translateY(-1px)}
+.btn-primary{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:13px;background:var(--navy);color:var(--gold);border:1px solid var(--gold-dark);border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:all var(--transition);margin-top:1.25rem}
+.btn-primary:hover{background:var(--navy-light);transform:translateY(-1px);box-shadow:var(--shadow-md)}
+.btn-primary:active{transform:translateY(0)}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.btn-secondary{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;background:transparent;color:var(--text-primary);border:1px solid var(--border-strong);border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:all var(--transition)}
+.btn-secondary:hover{background:var(--cream-dark)}
+.btn-secondary.linkedin-btn{color:#0077B5}
+.link-btn{background:none;border:none;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--gold-dark);cursor:pointer;font-weight:500;padding:0}
+.link-btn:hover{text-decoration:underline}
+.card{background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem;margin-bottom:1rem;box-shadow:var(--shadow-sm);transition:box-shadow var(--transition)}
+.card:hover{box-shadow:var(--shadow-md)}
+.card-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;gap:10px}
+.card-title{font-weight:600;font-size:15px;color:var(--text-primary);line-height:1.3}
+.card-sub{font-size:12px;color:var(--text-muted);margin-top:3px}
+.card-body-text{font-size:13px;color:var(--text-muted);line-height:1.6}
+.card-actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.opp-badge{font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;padding:3px 10px;border-radius:20px;white-space:nowrap;flex-shrink:0}
+.opp-badge.hot{background:#FFE8E8;color:#B91C1C}
+.opp-badge.good{background:var(--success-bg);color:var(--success)}
+.opp-badge.explore{background:var(--warn-bg);color:var(--warn)}
+.match-bar-wrap{display:flex;align-items:center;gap:10px;margin-top:12px}
+.match-label{font-size:12px;color:var(--text-muted);white-space:nowrap}
+.match-bar-bg{flex:1;height:6px;background:var(--cream-dark);border-radius:3px;overflow:hidden}
+.match-bar-fill{height:100%;border-radius:3px;background:var(--gold)}
+.match-pct{font-size:12px;font-weight:700;color:var(--gold-dark);min-width:35px;text-align:right}
+.ai-box{background:var(--navy);border-radius:var(--radius-md);padding:1.25rem;color:rgba(255,255,255,0.88);font-size:13.5px;line-height:1.75;margin-top:1rem;display:none}
+.ai-box.visible{display:block;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.ai-box-header{display:flex;align-items:center;gap:7px;margin-bottom:10px;color:var(--gold);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px}
+.ai-content{white-space:pre-wrap}
+.spinner{width:18px;height:18px;border:2px solid rgba(201,168,76,0.3);border-top-color:var(--gold);border-radius:50%;animation:spin .7s linear infinite;display:inline-block;vertical-align:middle;margin-right:8px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* setup banner */
+.setup-banner{background:linear-gradient(135deg,#fff8e6,#fff3cd);border:1px solid #f0c040;border-radius:var(--radius-md);padding:1rem 1.2rem;margin-bottom:1.25rem;font-size:13px;line-height:1.6;color:#5a4000}
+.setup-banner strong{color:#3d2b00;display:block;margin-bottom:4px;font-size:14px}
+.setup-banner code{background:rgba(0,0,0,0.07);padding:1px 6px;border-radius:3px;font-family:monospace;font-size:12px}
+
+.post-type-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1.25rem}
+.post-type-card{border:1.5px solid var(--border-strong);border-radius:var(--radius-md);padding:16px 12px;cursor:pointer;text-align:center;transition:all var(--transition);background:#fff;font-family:'DM Sans',sans-serif;display:flex;flex-direction:column;align-items:center;gap:4px}
+.post-type-card i{font-size:22px;color:var(--text-muted)}
+.post-type-card span{font-size:13px;font-weight:600;color:var(--text-secondary)}
+.post-type-card small{font-size:11px;color:var(--text-muted)}
+.post-type-card.selected{border-color:var(--gold);background:var(--gold-light)}
+.post-type-card.selected i{color:var(--gold-dark)}
+.post-type-card.selected span{color:var(--gold-dark)}
+.post-type-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-sm)}
+.generated-post{background:#fff;border:1px solid var(--border-strong);border-radius:var(--radius-md);padding:1.25rem;margin-top:1rem;position:relative;display:none}
+.generated-post.visible{display:block;animation:fadeIn .3s ease}
+.post-header{display:flex;align-items:center;gap:10px;margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.post-avatar{width:40px;height:40px;border-radius:50%;background:var(--navy);display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:14px;font-weight:700;flex-shrink:0}
+.post-author-name{font-weight:600;font-size:14px;color:var(--text-primary)}
+.post-meta{font-size:12px;color:var(--text-muted)}
+.post-text{font-size:14px;color:var(--text-primary);line-height:1.75;white-space:pre-wrap}
+.post-tags{margin-top:12px;display:flex;flex-wrap:wrap;gap:6px}
+.post-tag{font-size:13px;color:#0077B5;font-weight:500}
+.copy-btn{position:absolute;top:12px;right:12px;background:transparent;border:1px solid var(--border-strong);border-radius:var(--radius-sm);padding:5px 10px;font-size:11px;color:var(--text-muted);cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:5px;transition:background var(--transition)}
+.copy-btn:hover{background:var(--cream-dark)}
+.week-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:1rem}
+.day-cell{text-align:center;padding:8px 4px;border-radius:var(--radius-sm);border:1px solid var(--border);background:#fff}
+.day-name{font-size:9px;text-transform:uppercase;letter-spacing:.5px;color:var(--text-muted);font-weight:600}
+.day-num{font-size:15px;font-weight:600;color:var(--text-primary);margin:4px 0}
+.day-dot{width:6px;height:6px;border-radius:50%;margin:0 auto}
+.day-cell.has-task .day-dot{background:var(--gold)}
+.day-cell.today{border-color:var(--gold);background:var(--gold-light)}
+.day-cell.today .day-num{color:var(--gold-dark)}
+.nudge-card{background:#fff;border-left:3px solid var(--gold);border-top:1px solid var(--border);border-right:1px solid var(--border);border-bottom:1px solid var(--border);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:1rem 1rem 1rem 1.1rem;margin-bottom:10px;display:flex;align-items:flex-start;gap:14px}
+.nudge-icon{width:38px;height:38px;border-radius:10px;background:var(--gold-light);display:flex;align-items:center;justify-content:center;color:var(--gold-dark);font-size:16px;flex-shrink:0}
+.nudge-body{flex:1;min-width:0}
+.nudge-title{font-weight:600;font-size:14px;color:var(--text-primary)}
+.nudge-desc{font-size:12px;color:var(--text-muted);margin-top:3px;line-height:1.5}
+.nudge-due{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;margin-top:6px;color:var(--gold-dark)}
+.done-btn{font-size:11px;color:var(--success);background:var(--success-bg);border:none;border-radius:var(--radius-sm);padding:5px 10px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600;flex-shrink:0;align-self:flex-start;transition:all var(--transition)}
+.done-btn:hover{opacity:.8}
+.done-btn.completed{background:#eee;color:#999;text-decoration:line-through}
+.score-ring-wrap{display:flex;align-items:center;gap:1.5rem;margin-bottom:1.5rem}
+.score-ring{position:relative;width:88px;height:88px;flex-shrink:0}
+.score-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.score-num{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--navy);line-height:1}
+.score-label{font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px}
+.score-desc h3{font-size:16px;font-weight:600;color:var(--navy);margin-bottom:6px}
+.score-desc p{font-size:13px;color:var(--text-muted);line-height:1.6}
+.progress-item{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.progress-item-icon{width:36px;height:36px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.progress-item-label{flex:1;min-width:0}
+.progress-item-label span{font-size:13px;font-weight:500;color:var(--text-primary);display:block}
+.progress-item-label small{font-size:11px;color:var(--text-muted)}
+.mini-bar-bg{height:5px;background:var(--cream-dark);border-radius:3px;margin-top:6px;overflow:hidden}
+.mini-bar-fill{height:100%;border-radius:3px;background:var(--gold)}
+.progress-pct{font-size:13px;font-weight:700;color:var(--gold-dark);min-width:36px;text-align:right}
+.section-header{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:1rem}
+.section-header h2{font-family:'Playfair Display',serif;font-size:1.25rem;color:var(--navy)}
+.divider{height:1px;background:var(--border);margin:1.25rem 0;border:none}
+.subsection-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--text-muted);margin-bottom:12px;display:block}
+.tip-chip{display:inline-flex;align-items:center;gap:6px;background:var(--gold-light);border:1px solid var(--border-strong);color:var(--gold-dark);font-size:12px;font-weight:500;padding:5px 12px;border-radius:20px;margin-bottom:1rem}
+.tip-chip i{font-size:12px}
+.app-footer{text-align:center;padding:1.5rem;font-size:12px;color:var(--text-muted);border-top:1px solid var(--border);margin-top:2rem}
+.app-footer a{color:var(--gold-dark);text-decoration:none}
+.app-footer a:hover{text-decoration:underline}
+</style>
 </head>
 <body>
 
-<!-- HERO HEADER -->
 <header class="hero">
   <div class="hero-badge">✦ Career Compass</div>
   <h1>Your <span>Career Growth</span><br>Command Center</h1>
   <p>Discover opportunities, build your LinkedIn presence, and get weekly nudges to stay visible.</p>
 </header>
 
-<!-- NAV TABS -->
-<nav class="nav-strip" role="tablist">
-  <button class="nav-tab active" role="tab" aria-selected="true" onclick="switchTab('profile', this)">
-    <i class="fa-solid fa-user-tie" aria-hidden="true"></i>
-    Profile
-  </button>
-  <button class="nav-tab" role="tab" aria-selected="false" onclick="switchTab('opportunities', this)">
-    <i class="fa-solid fa-briefcase" aria-hidden="true"></i>
-    Roles
-  </button>
-  <button class="nav-tab" role="tab" aria-selected="false" onclick="switchTab('linkedin', this)">
-    <i class="fa-brands fa-linkedin" aria-hidden="true"></i>
-    LinkedIn
-  </button>
-  <button class="nav-tab" role="tab" aria-selected="false" onclick="switchTab('planner', this)">
-    <i class="fa-solid fa-calendar-week" aria-hidden="true"></i>
-    Planner
-  </button>
-  <button class="nav-tab" role="tab" aria-selected="false" onclick="switchTab('score', this)">
-    <i class="fa-solid fa-chart-line" aria-hidden="true"></i>
-    Progress
-  </button>
+<nav class="nav-strip">
+  <button class="nav-tab active" onclick="switchTab('profile',this)"><i class="fa-solid fa-user-tie"></i>Profile</button>
+  <button class="nav-tab" onclick="switchTab('opportunities',this)"><i class="fa-solid fa-briefcase"></i>Roles</button>
+  <button class="nav-tab" onclick="switchTab('linkedin',this)"><i class="fa-brands fa-linkedin"></i>LinkedIn</button>
+  <button class="nav-tab" onclick="switchTab('planner',this)"><i class="fa-solid fa-calendar-week"></i>Planner</button>
+  <button class="nav-tab" onclick="switchTab('score',this)"><i class="fa-solid fa-chart-line"></i>Progress</button>
 </nav>
 
-<!-- MAIN CONTENT -->
 <main class="app-body">
 
-  <!-- PROFILE TAB -->
-  <section class="section active" id="tab-profile" role="tabpanel" aria-labelledby="tab-profile-btn">
+  <!-- PROFILE -->
+  <section class="section active" id="tab-profile">
+
+    <div class="setup-banner" id="setup-banner">
+      <strong>⚙️ One-time setup required</strong>
+      Enter your Cloudflare Worker URL below to enable AI features. See <a href="https://github.com/amantalwar04/career-compass#setup" target="_blank">README → Setup</a> for the 5-minute guide.
+      <div style="margin-top:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <input type="url" id="worker-url" placeholder="https://career-compass-proxy.YOUR-NAME.workers.dev" style="flex:1;min-width:200px;padding:8px 12px;border:1px solid #d4a017;border-radius:6px;font-size:13px;font-family:'DM Sans',sans-serif">
+        <button onclick="saveWorkerUrl()" style="padding:8px 16px;background:#0F1B2D;color:#C9A84C;border:1px solid #8C6F2A;border-radius:6px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer">Save</button>
+      </div>
+    </div>
+
     <p class="form-title">Tell us about yourself</p>
     <p class="form-sub">We'll use this to find matching roles and craft your LinkedIn strategy.</p>
-
     <div class="form-row">
       <div class="form-group">
         <label for="user-name">Your Name</label>
-        <input type="text" id="user-name" placeholder="Alex Johnson" oninput="updateName()" autocomplete="name">
+        <input type="text" id="user-name" placeholder="Alex Johnson" oninput="updateName()">
       </div>
       <div class="form-group">
         <label for="current-title">Current Title</label>
         <input type="text" id="current-title" placeholder="e.g. Product Manager">
       </div>
     </div>
-
     <div class="form-row">
       <div class="form-group">
         <label for="industry">Industry</label>
@@ -90,15 +225,13 @@
         </select>
       </div>
     </div>
-
     <div class="form-group">
       <label for="target-role">Target Role</label>
-      <input type="text" id="target-role" placeholder="e.g. VP of Product, Chief of Staff, AI Consultant...">
+      <input type="text" id="target-role" placeholder="e.g. VP of Product, Chief of Staff, AI Consultant…">
     </div>
-
     <div class="form-group">
-      <label>Your Top Skills <span class="label-hint">(select all that apply)</span></label>
-      <div class="skill-tags" id="skill-tags">
+      <label>Your Top Skills <span class="label-hint">(tap to select)</span></label>
+      <div class="skill-tags">
         <button class="skill-tag" onclick="toggleSkill(this)">Leadership</button>
         <button class="skill-tag" onclick="toggleSkill(this)">Strategy</button>
         <button class="skill-tag" onclick="toggleSkill(this)">Data Analysis</button>
@@ -115,148 +248,111 @@
         <button class="skill-tag" onclick="toggleSkill(this)">Engineering</button>
       </div>
     </div>
-
     <div class="form-group">
       <label for="career-goal">Career Goal <span class="label-hint">(in your own words)</span></label>
-      <textarea id="career-goal" placeholder="e.g. I want to transition from operations into a strategic consulting role within 2 years..."></textarea>
+      <textarea id="career-goal" placeholder="e.g. I want to transition from operations into strategic consulting within 2 years…"></textarea>
     </div>
-
-    <button class="btn-primary" onclick="analyzeProfile()">
-      <i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i>
-      Analyze My Profile &amp; Find Opportunities
+    <button class="btn-primary" id="analyze-btn" onclick="analyzeProfile()">
+      <i class="fa-solid fa-wand-magic-sparkles"></i> Analyze My Profile &amp; Find Opportunities
     </button>
-
-    <div class="ai-box" id="profile-ai-box" aria-live="polite" aria-label="AI Career Insight">
-      <div class="ai-box-header"><i class="fa-solid fa-star" aria-hidden="true"></i> AI Career Insight</div>
+    <div class="ai-box" id="profile-ai-box">
+      <div class="ai-box-header"><i class="fa-solid fa-star"></i> AI Career Insight</div>
       <div class="ai-content" id="profile-ai-content"></div>
     </div>
   </section>
 
-  <!-- OPPORTUNITIES TAB -->
-  <section class="section" id="tab-opportunities" role="tabpanel">
+  <!-- ROLES -->
+  <section class="section" id="tab-opportunities">
     <div class="section-header">
       <h2>Matched Opportunities</h2>
       <button class="link-btn" onclick="refreshOpps()">↻ Refresh</button>
     </div>
-
-    <div class="tip-chip"><i class="fa-solid fa-lightbulb" aria-hidden="true"></i> Based on your profile — update it to refine matches</div>
-
-    <div id="opps-container">
-      <article class="card">
-        <div class="card-header">
-          <div>
-            <div class="card-title">Senior Product Manager</div>
-            <div class="card-sub">Growth-stage SaaS · $140–$180K</div>
-          </div>
-          <span class="opp-badge hot">🔥 Hot</span>
-        </div>
-        <p class="card-body-text">Leading product strategy for a B2B analytics platform. Requires 5+ years PM experience and strong data intuition.</p>
-        <div class="match-bar-wrap">
-          <span class="match-label">Profile match</span>
-          <div class="match-bar-bg"><div class="match-bar-fill" style="width:88%"></div></div>
-          <span class="match-pct">88%</span>
-        </div>
-        <div class="card-actions">
-          <button class="btn-secondary" onclick="getAIAdvice('Senior Product Manager at a growth SaaS company')">AI Advice ↗</button>
-          <button class="btn-secondary linkedin-btn">LinkedIn Search ↗</button>
-        </div>
-      </article>
-
-      <article class="card">
-        <div class="card-header">
-          <div>
-            <div class="card-title">Chief of Staff</div>
-            <div class="card-sub">Series B Startup · $120–$160K</div>
-          </div>
-          <span class="opp-badge good">✓ Great Fit</span>
-        </div>
-        <p class="card-body-text">Bridge between founder and teams. Strategy, ops, and cross-functional leadership in a fast-scaling environment.</p>
-        <div class="match-bar-wrap">
-          <span class="match-label">Profile match</span>
-          <div class="match-bar-bg"><div class="match-bar-fill" style="width:74%"></div></div>
-          <span class="match-pct">74%</span>
-        </div>
-        <div class="card-actions">
-          <button class="btn-secondary" onclick="getAIAdvice('Chief of Staff at a Series B startup')">AI Advice ↗</button>
-          <button class="btn-secondary linkedin-btn">LinkedIn Search ↗</button>
-        </div>
-      </article>
-
-      <article class="card">
-        <div class="card-header">
-          <div>
-            <div class="card-title">AI Strategy Consultant</div>
-            <div class="card-sub">Big 4 / Boutique Firms · $130–$200K</div>
-          </div>
-          <span class="opp-badge explore">Explore</span>
-        </div>
-        <p class="card-body-text">Help enterprises adopt AI. Blend of product, data, and client-facing skills valued highly.</p>
-        <div class="match-bar-wrap">
-          <span class="match-label">Profile match</span>
-          <div class="match-bar-bg"><div class="match-bar-fill" style="width:62%"></div></div>
-          <span class="match-pct">62%</span>
-        </div>
-        <div class="card-actions">
-          <button class="btn-secondary" onclick="getAIAdvice('AI Strategy Consultant at Big 4 firms')">AI Advice ↗</button>
-          <button class="btn-secondary linkedin-btn">LinkedIn Search ↗</button>
-        </div>
-      </article>
-    </div>
-
-    <div class="ai-box" id="opps-ai-box" aria-live="polite">
-      <div class="ai-box-header"><i class="fa-solid fa-star" aria-hidden="true"></i> AI Career Advice</div>
+    <div class="tip-chip"><i class="fa-solid fa-lightbulb"></i> Based on your profile — update it to refine matches</div>
+    <article class="card">
+      <div class="card-header">
+        <div><div class="card-title">Senior Product Manager</div><div class="card-sub">Growth-stage SaaS · $140–$180K</div></div>
+        <span class="opp-badge hot">🔥 Hot</span>
+      </div>
+      <p class="card-body-text">Leading product strategy for a B2B analytics platform. Requires 5+ years PM experience and strong data intuition.</p>
+      <div class="match-bar-wrap">
+        <span class="match-label">Profile match</span>
+        <div class="match-bar-bg"><div class="match-bar-fill" style="width:88%"></div></div>
+        <span class="match-pct">88%</span>
+      </div>
+      <div class="card-actions">
+        <button class="btn-secondary" onclick="getAIAdvice('Senior Product Manager at a growth SaaS company')">AI Advice ↗</button>
+        <button class="btn-secondary linkedin-btn">LinkedIn Search ↗</button>
+      </div>
+    </article>
+    <article class="card">
+      <div class="card-header">
+        <div><div class="card-title">Chief of Staff</div><div class="card-sub">Series B Startup · $120–$160K</div></div>
+        <span class="opp-badge good">✓ Great Fit</span>
+      </div>
+      <p class="card-body-text">Bridge between founder and teams. Strategy, ops, and cross-functional leadership in a fast-scaling environment.</p>
+      <div class="match-bar-wrap">
+        <span class="match-label">Profile match</span>
+        <div class="match-bar-bg"><div class="match-bar-fill" style="width:74%"></div></div>
+        <span class="match-pct">74%</span>
+      </div>
+      <div class="card-actions">
+        <button class="btn-secondary" onclick="getAIAdvice('Chief of Staff at a Series B startup')">AI Advice ↗</button>
+        <button class="btn-secondary linkedin-btn">LinkedIn Search ↗</button>
+      </div>
+    </article>
+    <article class="card">
+      <div class="card-header">
+        <div><div class="card-title">AI Strategy Consultant</div><div class="card-sub">Big 4 / Boutique Firms · $130–$200K</div></div>
+        <span class="opp-badge explore">Explore</span>
+      </div>
+      <p class="card-body-text">Help enterprises adopt AI. Blend of product, data, and client-facing skills valued highly.</p>
+      <div class="match-bar-wrap">
+        <span class="match-label">Profile match</span>
+        <div class="match-bar-bg"><div class="match-bar-fill" style="width:62%"></div></div>
+        <span class="match-pct">62%</span>
+      </div>
+      <div class="card-actions">
+        <button class="btn-secondary" onclick="getAIAdvice('AI Strategy Consultant at Big 4 firms')">AI Advice ↗</button>
+        <button class="btn-secondary linkedin-btn">LinkedIn Search ↗</button>
+      </div>
+    </article>
+    <div class="ai-box" id="opps-ai-box">
+      <div class="ai-box-header"><i class="fa-solid fa-star"></i> AI Career Advice</div>
       <div class="ai-content" id="opps-ai-content"></div>
     </div>
   </section>
 
-  <!-- LINKEDIN TAB -->
-  <section class="section" id="tab-linkedin" role="tabpanel">
-    <div class="section-header">
-      <h2>LinkedIn Content Studio</h2>
-    </div>
-    <p class="form-sub">Choose a content format. AI will generate a ready-to-post piece tailored to your profile.</p>
-
+  <!-- LINKEDIN -->
+  <section class="section" id="tab-linkedin">
+    <div class="section-header"><h2>LinkedIn Content Studio</h2></div>
+    <p class="form-sub">Choose a format — AI generates a ready-to-post piece tailored to your profile.</p>
     <div class="post-type-grid">
-      <button class="post-type-card" onclick="selectPostType(this, 'post')">
-        <i class="fa-regular fa-note-sticky" aria-hidden="true"></i>
-        <span>Short Post</span>
-        <small>Insight · Story · Take</small>
+      <button class="post-type-card" onclick="selectPostType(this,'post')">
+        <i class="fa-regular fa-note-sticky"></i><span>Short Post</span><small>Insight · Story · Take</small>
       </button>
-      <button class="post-type-card" onclick="selectPostType(this, 'article')">
-        <i class="fa-regular fa-newspaper" aria-hidden="true"></i>
-        <span>LinkedIn Article</span>
-        <small>Deep-dive · Thought leadership</small>
+      <button class="post-type-card" onclick="selectPostType(this,'article')">
+        <i class="fa-regular fa-newspaper"></i><span>LinkedIn Article</span><small>Deep-dive · Thought leadership</small>
       </button>
-      <button class="post-type-card" onclick="selectPostType(this, 'newsletter')">
-        <i class="fa-regular fa-envelope-open" aria-hidden="true"></i>
-        <span>Newsletter</span>
-        <small>Weekly edition</small>
+      <button class="post-type-card" onclick="selectPostType(this,'newsletter')">
+        <i class="fa-regular fa-envelope-open"></i><span>Newsletter</span><small>Weekly edition</small>
       </button>
-      <button class="post-type-card" onclick="selectPostType(this, 'carousel')">
-        <i class="fa-regular fa-images" aria-hidden="true"></i>
-        <span>Carousel Hook</span>
-        <small>Slide 1 hook text</small>
+      <button class="post-type-card" onclick="selectPostType(this,'carousel')">
+        <i class="fa-regular fa-images"></i><span>Carousel Hook</span><small>Slide 1 hook text</small>
       </button>
     </div>
-
     <div class="form-group">
       <label for="post-topic">Topic or Angle <span class="label-hint">(optional)</span></label>
-      <input type="text" id="post-topic" placeholder="e.g. Lessons from my career pivot, AI in product, hidden job market...">
+      <input type="text" id="post-topic" placeholder="e.g. Lessons from my career pivot, AI in product, hidden job market…">
     </div>
-
     <button class="btn-primary" onclick="generatePost()">
-      <i class="fa-solid fa-pen-nib" aria-hidden="true"></i>
-      Generate LinkedIn Content
+      <i class="fa-solid fa-pen-nib"></i> Generate LinkedIn Content
     </button>
-
-    <div class="generated-post" id="generated-post" aria-live="polite">
-      <button class="copy-btn" onclick="copyPost()" aria-label="Copy post to clipboard">
-        <i class="fa-regular fa-copy" aria-hidden="true"></i> Copy
-      </button>
+    <div class="generated-post" id="generated-post">
+      <button class="copy-btn" onclick="copyPost()"><i class="fa-regular fa-copy"></i> Copy</button>
       <div class="post-header">
-        <div class="post-avatar" id="post-avatar" aria-hidden="true">A</div>
+        <div class="post-avatar" id="post-avatar">A</div>
         <div>
-          <div class="post-author-name" id="post-name">Alex Johnson</div>
+          <div class="post-author-name" id="post-name">Your Name</div>
           <div class="post-meta">Posting to LinkedIn</div>
         </div>
       </div>
@@ -265,178 +361,98 @@
     </div>
   </section>
 
-  <!-- PLANNER TAB -->
-  <section class="section" id="tab-planner" role="tabpanel">
-    <div class="section-header">
-      <h2>Weekly Nudge Planner</h2>
-    </div>
-
-    <div class="week-grid" id="week-grid" aria-label="Week calendar"></div>
-
+  <!-- PLANNER -->
+  <section class="section" id="tab-planner">
+    <div class="section-header"><h2>Weekly Nudge Planner</h2></div>
+    <div class="week-grid" id="week-grid"></div>
     <hr class="divider">
-
-    <p class="subsection-label">This Week's Actions</p>
-
+    <span class="subsection-label">This Week's Actions</span>
     <div class="nudge-card">
-      <div class="nudge-icon" aria-hidden="true"><i class="fa-brands fa-linkedin"></i></div>
-      <div class="nudge-body">
-        <div class="nudge-title">Post a short insight (Mon)</div>
-        <div class="nudge-desc">Share a 150-word lesson from a recent work challenge. Authenticity gets 3× more engagement.</div>
-        <div class="nudge-due">📅 Due Monday</div>
-      </div>
-      <button class="done-btn" onclick="markDone(this)" aria-label="Mark as done">✓ Done</button>
+      <div class="nudge-icon"><i class="fa-brands fa-linkedin"></i></div>
+      <div class="nudge-body"><div class="nudge-title">Post a short insight (Mon)</div><div class="nudge-desc">Share a 150-word lesson from a recent work challenge. Authenticity gets 3× more engagement.</div><div class="nudge-due">📅 Due Monday</div></div>
+      <button class="done-btn" onclick="markDone(this)">✓ Done</button>
     </div>
-
     <div class="nudge-card">
-      <div class="nudge-icon" aria-hidden="true"><i class="fa-solid fa-handshake"></i></div>
-      <div class="nudge-body">
-        <div class="nudge-title">Connect with 5 people in target industry</div>
-        <div class="nudge-desc">Send personalized notes — reference something specific from their profile or post.</div>
-        <div class="nudge-due">📅 Due Wednesday</div>
-      </div>
-      <button class="done-btn" onclick="markDone(this)" aria-label="Mark as done">✓ Done</button>
+      <div class="nudge-icon"><i class="fa-solid fa-handshake"></i></div>
+      <div class="nudge-body"><div class="nudge-title">Connect with 5 people in target industry</div><div class="nudge-desc">Send personalized notes — reference something specific from their profile or post.</div><div class="nudge-due">📅 Due Wednesday</div></div>
+      <button class="done-btn" onclick="markDone(this)">✓ Done</button>
     </div>
-
     <div class="nudge-card">
-      <div class="nudge-icon" aria-hidden="true"><i class="fa-solid fa-comment-dots"></i></div>
-      <div class="nudge-body">
-        <div class="nudge-title">Comment on 3 industry leader posts</div>
-        <div class="nudge-desc">Thoughtful comments put you in front of thousands. Add your unique perspective, not just "Great post!"</div>
-        <div class="nudge-due">📅 Due Thursday</div>
-      </div>
-      <button class="done-btn" onclick="markDone(this)" aria-label="Mark as done">✓ Done</button>
+      <div class="nudge-icon"><i class="fa-solid fa-comment-dots"></i></div>
+      <div class="nudge-body"><div class="nudge-title">Comment on 3 industry leader posts</div><div class="nudge-desc">Thoughtful comments put you in front of thousands. Add your perspective, not just "Great post!"</div><div class="nudge-due">📅 Due Thursday</div></div>
+      <button class="done-btn" onclick="markDone(this)">✓ Done</button>
     </div>
-
     <div class="nudge-card">
-      <div class="nudge-icon" aria-hidden="true"><i class="fa-solid fa-user-pen"></i></div>
-      <div class="nudge-body">
-        <div class="nudge-title">Update LinkedIn headline &amp; About (Fri)</div>
-        <div class="nudge-desc">Your headline is prime real estate. Formula: Role · Superpower · Who you help.</div>
-        <div class="nudge-due">📅 Due Friday</div>
-      </div>
-      <button class="done-btn" onclick="markDone(this)" aria-label="Mark as done">✓ Done</button>
+      <div class="nudge-icon"><i class="fa-solid fa-user-pen"></i></div>
+      <div class="nudge-body"><div class="nudge-title">Update LinkedIn headline &amp; About (Fri)</div><div class="nudge-desc">Your headline is prime real estate. Formula: Role · Superpower · Who you help.</div><div class="nudge-due">📅 Due Friday</div></div>
+      <button class="done-btn" onclick="markDone(this)">✓ Done</button>
     </div>
-
     <div class="nudge-card">
-      <div class="nudge-icon" aria-hidden="true"><i class="fa-regular fa-newspaper"></i></div>
-      <div class="nudge-body">
-        <div class="nudge-title">Draft next week's newsletter intro</div>
-        <div class="nudge-desc">15 minutes this weekend saves 2 hours Monday morning. Use Content Studio to draft it.</div>
-        <div class="nudge-due">📅 Due Sunday</div>
-      </div>
-      <button class="done-btn" onclick="markDone(this)" aria-label="Mark as done">✓ Done</button>
+      <div class="nudge-icon"><i class="fa-regular fa-newspaper"></i></div>
+      <div class="nudge-body"><div class="nudge-title">Draft next week's newsletter intro</div><div class="nudge-desc">15 minutes this weekend saves 2 hours Monday morning. Use the Content Studio to draft it.</div><div class="nudge-due">📅 Due Sunday</div></div>
+      <button class="done-btn" onclick="markDone(this)">✓ Done</button>
     </div>
-
     <hr class="divider">
-
     <button class="btn-primary" onclick="generateWeeklyPlan()">
-      <i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i>
-      AI: Generate a Personalized Weekly Plan
+      <i class="fa-solid fa-wand-magic-sparkles"></i> AI: Generate a Personalized Weekly Plan
     </button>
-
-    <div class="ai-box" id="planner-ai-box" aria-live="polite">
-      <div class="ai-box-header"><i class="fa-solid fa-star" aria-hidden="true"></i> Your Personalized Weekly Plan</div>
+    <div class="ai-box" id="planner-ai-box">
+      <div class="ai-box-header"><i class="fa-solid fa-star"></i> Your Personalized Weekly Plan</div>
       <div class="ai-content" id="planner-ai-content"></div>
     </div>
   </section>
 
-  <!-- PROGRESS TAB -->
-  <section class="section" id="tab-score" role="tabpanel">
-    <div class="section-header">
-      <h2>Visibility Score</h2>
-    </div>
-
+  <!-- PROGRESS -->
+  <section class="section" id="tab-score">
+    <div class="section-header"><h2>Visibility Score</h2></div>
     <div class="score-ring-wrap">
-      <div class="score-ring" role="img" aria-label="Visibility score: 64 out of 100">
-        <svg viewBox="0 0 88 88" width="88" height="88" aria-hidden="true">
+      <div class="score-ring">
+        <svg viewBox="0 0 88 88" width="88" height="88">
           <circle cx="44" cy="44" r="36" fill="none" stroke="#F0E9D8" stroke-width="8"/>
           <circle cx="44" cy="44" r="36" fill="none" stroke="#C9A84C" stroke-width="8"
             stroke-dasharray="226" stroke-dashoffset="80" stroke-linecap="round"
             transform="rotate(-90 44 44)"/>
         </svg>
-        <div class="score-center">
-          <div class="score-num">64</div>
-          <div class="score-label">/ 100</div>
-        </div>
+        <div class="score-center"><div class="score-num">64</div><div class="score-label">/ 100</div></div>
       </div>
       <div class="score-desc">
         <h3>Growing Steadily 📈</h3>
         <p>You're in the top 35% of professionals actively building their brand. 3 key actions this week could push you to 80+.</p>
       </div>
     </div>
-
     <hr class="divider">
-    <p class="subsection-label">Breakdown</p>
-
+    <span class="subsection-label">Breakdown</span>
     <div class="progress-item">
-      <div class="progress-item-icon" style="background:#EBF5FB;color:#1A5276;" aria-hidden="true">
-        <i class="fa-brands fa-linkedin"></i>
-      </div>
-      <div class="progress-item-label">
-        <span>Profile Completeness</span>
-        <small>Headline, About, Skills, Photo</small>
-        <div class="mini-bar-bg"><div class="mini-bar-fill" style="width:80%"></div></div>
-      </div>
-      <span class="progress-pct" aria-label="80 percent">80%</span>
+      <div class="progress-item-icon" style="background:#EBF5FB;color:#1A5276"><i class="fa-brands fa-linkedin"></i></div>
+      <div class="progress-item-label"><span>Profile Completeness</span><small>Headline, About, Skills, Photo</small><div class="mini-bar-bg"><div class="mini-bar-fill" style="width:80%"></div></div></div>
+      <span class="progress-pct">80%</span>
     </div>
-
     <div class="progress-item">
-      <div class="progress-item-icon" style="background:#FDEBD0;color:#784212;" aria-hidden="true">
-        <i class="fa-solid fa-pen-nib"></i>
-      </div>
-      <div class="progress-item-label">
-        <span>Posting Consistency</span>
-        <small>Weekly posts in last 30 days</small>
-        <div class="mini-bar-bg"><div class="mini-bar-fill" style="width:50%"></div></div>
-      </div>
-      <span class="progress-pct" aria-label="50 percent">50%</span>
+      <div class="progress-item-icon" style="background:#FDEBD0;color:#784212"><i class="fa-solid fa-pen-nib"></i></div>
+      <div class="progress-item-label"><span>Posting Consistency</span><small>Weekly posts in last 30 days</small><div class="mini-bar-bg"><div class="mini-bar-fill" style="width:50%"></div></div></div>
+      <span class="progress-pct">50%</span>
     </div>
-
     <div class="progress-item">
-      <div class="progress-item-icon" style="background:#EAFAF1;color:#1E8449;" aria-hidden="true">
-        <i class="fa-solid fa-users"></i>
-      </div>
-      <div class="progress-item-label">
-        <span>Network Growth</span>
-        <small>Connections added this month</small>
-        <div class="mini-bar-bg"><div class="mini-bar-fill" style="width:55%"></div></div>
-      </div>
-      <span class="progress-pct" aria-label="55 percent">55%</span>
+      <div class="progress-item-icon" style="background:#EAFAF1;color:#1E8449"><i class="fa-solid fa-users"></i></div>
+      <div class="progress-item-label"><span>Network Growth</span><small>Connections added this month</small><div class="mini-bar-bg"><div class="mini-bar-fill" style="width:55%"></div></div></div>
+      <span class="progress-pct">55%</span>
     </div>
-
     <div class="progress-item">
-      <div class="progress-item-icon" style="background:#F4ECF7;color:#6C3483;" aria-hidden="true">
-        <i class="fa-solid fa-comment"></i>
-      </div>
-      <div class="progress-item-label">
-        <span>Engagement Activity</span>
-        <small>Comments, reactions, shares</small>
-        <div class="mini-bar-bg"><div class="mini-bar-fill" style="width:40%"></div></div>
-      </div>
-      <span class="progress-pct" aria-label="40 percent">40%</span>
+      <div class="progress-item-icon" style="background:#F4ECF7;color:#6C3483"><i class="fa-solid fa-comment"></i></div>
+      <div class="progress-item-label"><span>Engagement Activity</span><small>Comments, reactions, shares</small><div class="mini-bar-bg"><div class="mini-bar-fill" style="width:40%"></div></div></div>
+      <span class="progress-pct">40%</span>
     </div>
-
     <div class="progress-item">
-      <div class="progress-item-icon" style="background:#FDEDEC;color:#922B21;" aria-hidden="true">
-        <i class="fa-solid fa-briefcase"></i>
-      </div>
-      <div class="progress-item-label">
-        <span>Role Applications</span>
-        <small>Applied to matched opportunities</small>
-        <div class="mini-bar-bg"><div class="mini-bar-fill" style="width:70%"></div></div>
-      </div>
-      <span class="progress-pct" aria-label="70 percent">70%</span>
+      <div class="progress-item-icon" style="background:#FDEDEC;color:#922B21"><i class="fa-solid fa-briefcase"></i></div>
+      <div class="progress-item-label"><span>Role Applications</span><small>Applied to matched opportunities</small><div class="mini-bar-bg"><div class="mini-bar-fill" style="width:70%"></div></div></div>
+      <span class="progress-pct">70%</span>
     </div>
-
     <hr class="divider">
-
     <button class="btn-primary" onclick="getGrowthTips()">
-      <i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i>
-      AI: What Should I Focus on Next?
+      <i class="fa-solid fa-wand-magic-sparkles"></i> AI: What Should I Focus on Next?
     </button>
-
-    <div class="ai-box" id="score-ai-box" aria-live="polite">
-      <div class="ai-box-header"><i class="fa-solid fa-star" aria-hidden="true"></i> AI Growth Coaching</div>
+    <div class="ai-box" id="score-ai-box">
+      <div class="ai-box-header"><i class="fa-solid fa-star"></i> AI Growth Coaching</div>
       <div class="ai-content" id="score-ai-content"></div>
     </div>
   </section>
@@ -444,9 +460,211 @@
 </main>
 
 <footer class="app-footer">
-  <p>Career Compass · Built with Claude AI · <a href="https://github.com/amantalwar04/career-compass" target="_blank" rel="noopener">GitHub</a></p>
+  Career Compass · Built with Claude AI · <a href="https://github.com/amantalwar04/career-compass" target="_blank" rel="noopener">GitHub</a>
 </footer>
 
-<script src="./app.js"></script>
+<script>
+'use strict';
+
+// ── Worker URL (user configures once) ─────────────────────
+let WORKER_URL = localStorage.getItem('cc_worker_url') || '';
+
+function saveWorkerUrl() {
+  const val = document.getElementById('worker-url').value.trim().replace(/\/$/, '');
+  if (!val.startsWith('http')) { alert('Please enter a valid URL starting with https://'); return; }
+  WORKER_URL = val;
+  localStorage.setItem('cc_worker_url', val);
+  document.getElementById('setup-banner').style.display = 'none';
+  alert('✅ Worker URL saved! AI features are now active.');
+}
+
+// Hide banner if already configured
+window.addEventListener('DOMContentLoaded', () => {
+  if (WORKER_URL) document.getElementById('setup-banner').style.display = 'none';
+  buildWeekGrid();
+});
+
+// ── State ───────────────────────────────────────────────
+let selectedPostType = 'post';
+
+// ── Nav ─────────────────────────────────────────────────
+function switchTab(tab, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  if (btn) btn.classList.add('active');
+}
+
+function toggleSkill(el) { el.classList.toggle('selected'); }
+
+function updateName() {
+  const n = document.getElementById('user-name').value.trim();
+  const av = document.getElementById('post-avatar');
+  const pn = document.getElementById('post-name');
+  if (av) av.textContent = (n[0] || 'A').toUpperCase();
+  if (pn) pn.textContent = n || 'Your Name';
+}
+
+function getProfile() {
+  return {
+    name:     document.getElementById('user-name').value.trim()    || 'a professional',
+    title:    document.getElementById('current-title').value.trim() || 'a professional',
+    industry: document.getElementById('industry').value            || 'their industry',
+    exp:      document.getElementById('experience').value          || 'several years of',
+    target:   document.getElementById('target-role').value.trim()  || 'a senior role',
+    goal:     document.getElementById('career-goal').value.trim()  || '',
+    skills:   [...document.querySelectorAll('.skill-tag.selected')].map(e => e.textContent.trim()).join(', ') || 'various skills',
+  };
+}
+
+// ── Claude API via Worker Proxy ─────────────────────────
+async function callClaude(prompt, outputEl, boxEl, btnEl) {
+  if (!WORKER_URL) {
+    alert('Please set your Cloudflare Worker URL first (see the setup banner on the Profile tab).');
+    return;
+  }
+  boxEl.classList.add('visible');
+  outputEl.innerHTML = '<span class="spinner"></span>Thinking…';
+  if (btnEl) btnEl.disabled = true;
+
+  try {
+    const res = await fetch(WORKER_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }]
+      }),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.error?.message || 'HTTP ' + res.status);
+    }
+    const data = await res.json();
+    outputEl.textContent = data.content?.map(b => b.text || '').join('') || 'No response.';
+  } catch (e) {
+    outputEl.textContent = '⚠️ ' + (e.message || 'Something went wrong. Please try again.');
+  } finally {
+    if (btnEl) btnEl.disabled = false;
+  }
+}
+
+// ── Actions ─────────────────────────────────────────────
+function analyzeProfile() {
+  const p = getProfile();
+  callClaude(
+    `You are a world-class career coach. Analyze this professional profile and give 3–4 specific, actionable insights in a warm but direct tone.\n\nName: ${p.name}\nCurrent role: ${p.title}\nIndustry: ${p.industry}\nExperience: ${p.exp}\nTarget role: ${p.target}\nKey skills: ${p.skills}\nCareer goal: ${p.goal}\n\nGive: (1) Biggest strength to leverage, (2) Biggest gap to address, (3) One non-obvious opportunity, (4) First concrete step this week. Specific and motivating. Under 220 words.`,
+    document.getElementById('profile-ai-content'),
+    document.getElementById('profile-ai-box'),
+    document.getElementById('analyze-btn')
+  );
+}
+
+function getAIAdvice(role) {
+  const p = getProfile();
+  callClaude(
+    `Career coaching advice for ${p.name}, a ${p.title} with ${p.exp} experience, targeting: ${role}.\n\nGive 3 specific tips: (1) How to position their background, (2) What skill to highlight or fast-track, (3) How to approach networking for this opportunity. Practical and specific. Max 200 words.`,
+    document.getElementById('opps-ai-content'),
+    document.getElementById('opps-ai-box'),
+    null
+  );
+}
+
+function refreshOpps() { alert('Complete your profile to get dynamically matched opportunities!'); }
+
+function selectPostType(el, type) {
+  document.querySelectorAll('.post-type-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedPostType = type;
+}
+
+async function generatePost() {
+  if (!WORKER_URL) { alert('Please set your Cloudflare Worker URL first (Profile tab → setup banner).'); return; }
+  const p = getProfile();
+  const topic = document.getElementById('post-topic').value.trim();
+  const box = document.getElementById('generated-post');
+  const content = document.getElementById('post-content');
+  const hashes = document.getElementById('post-hashtags');
+  const types = {
+    post: 'a compelling 150–180 word LinkedIn post with a strong hook, personal insight, and a closing question. Use line breaks. Add 4–5 hashtags on a new line at the end, each starting with #.',
+    article: 'a LinkedIn article outline: punchy headline, 4-section structure, and first 150 words of the intro. Thought-leadership quality.',
+    newsletter: 'a LinkedIn newsletter intro (180 words): personal opening, theme of the week, teaser for 3 topics. Start with a compelling subject line.',
+    carousel: 'a carousel script — Slide 1: bold hook (8–12 words, impossible to scroll past). Slides 2–6: one punchy insight each (10–15 words). Label each slide.',
+  };
+  const prompt = `You are a LinkedIn content strategist. Write ${types[selectedPostType] || types.post}\n\nAuthor: ${p.title} in ${p.industry}, ${p.exp} experience, skills: ${p.skills}. Target audience: people interested in ${p.target}.\n${topic ? 'Topic: ' + topic : 'Choose the most compelling topic for this profile.'}\n\nHuman voice. No clichés like "I'm excited to share" or "In today's world".`;
+
+  box.classList.add('visible');
+  content.textContent = '⏳ Crafting your post…';
+  hashes.innerHTML = '';
+
+  try {
+    const res = await fetch(WORKER_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1000, messages: [{ role: 'user', content: prompt }] }),
+    });
+    const data = await res.json();
+    const text = data.content?.map(b => b.text || '').join('') || '';
+    const lines = text.split('\n');
+    const hashLines = lines.filter(l => /^#\w/.test(l.trim()));
+    content.textContent = lines.filter(l => !/^#\w/.test(l.trim())).join('\n').trim();
+    (hashLines.join(' ').match(/#\w+/g) || []).forEach(tag => {
+      const s = document.createElement('span'); s.className = 'post-tag'; s.textContent = tag + ' '; hashes.appendChild(s);
+    });
+  } catch(e) { content.textContent = '⚠️ ' + (e.message || 'Could not generate. Please try again.'); }
+}
+
+function copyPost() {
+  const text = document.getElementById('post-content').textContent;
+  const tags = [...document.querySelectorAll('.post-tag')].map(s => s.textContent.trim()).join(' ');
+  const btn = document.querySelector('.copy-btn');
+  navigator.clipboard.writeText(text + (tags ? '\n\n' + tags : '')).then(() => {
+    btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+    setTimeout(() => { btn.innerHTML = '<i class="fa-regular fa-copy"></i> Copy'; }, 2000);
+  });
+}
+
+function markDone(btn) {
+  btn.classList.toggle('completed');
+  btn.textContent = btn.classList.contains('completed') ? '✓ Done!' : '✓ Done';
+}
+
+function generateWeeklyPlan() {
+  const p = getProfile();
+  callClaude(
+    `Create a personalized 5-day LinkedIn and career growth plan for ${p.name}, a ${p.title} in ${p.industry} aiming to become ${p.target}.\n\nMonday through Friday. Each day: (1) one specific LinkedIn action with exact post type and topic angle; (2) one career move — outreach, resource to study, or application. 2–3 sentences per day. Under 250 words.`,
+    document.getElementById('planner-ai-content'),
+    document.getElementById('planner-ai-box'),
+    null
+  );
+}
+
+function getGrowthTips() {
+  const p = getProfile();
+  callClaude(
+    `LinkedIn growth coach. Give 3 ultra-specific priorities ranked by impact for: ${p.title}, ${p.industry}, ${p.exp}, targeting ${p.target}.\n\nFor each: (1) Exactly what to do, (2) Why it moves the needle, (3) How to execute in under 20 minutes this week. Direct, no fluff. Max 220 words.`,
+    document.getElementById('score-ai-content'),
+    document.getElementById('score-ai-box'),
+    null
+  );
+}
+
+function buildWeekGrid() {
+  const grid = document.getElementById('week-grid');
+  if (!grid) return;
+  const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const today = new Date();
+  const taskDays = [1,3,4,5];
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(today);
+    d.setDate(today.getDate() - today.getDay() + i);
+    const cell = document.createElement('div');
+    cell.className = 'day-cell' + (i === today.getDay() ? ' today' : '') + (taskDays.includes(i) ? ' has-task' : '');
+    cell.innerHTML = `<div class="day-name">${days[i]}</div><div class="day-num">${d.getDate()}</div><div class="day-dot"></div>`;
+    grid.appendChild(cell);
+  }
+}
+</script>
 </body>
 </html>

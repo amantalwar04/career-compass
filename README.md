@@ -6,26 +6,45 @@
 
 ---
 
-## What it does
+## Setup (5 minutes to enable AI features)
 
-Career Compass is a single-page web app that helps professionals at any stage:
+The app is a static GitHub Pages site. Because browsers block direct calls to `api.anthropic.com` (CORS), you need a free Cloudflare Worker as a proxy. It takes 5 minutes and costs nothing.
 
-| Feature | Description |
-|---|---|
-| **Profile Builder** | Fill in your background, skills, and target role — Claude AI gives you personalized career coaching instantly |
-| **Role Matcher** | See curated opportunities with profile match scores; get AI advice on how to position yourself for each |
-| **LinkedIn Content Studio** | Generate short posts, articles, newsletters, or carousel hooks tailored to your voice and target audience |
-| **Weekly Nudge Planner** | A calendar-driven action tracker with 5 weekly nudges; Claude generates a personalized Mon–Fri plan |
-| **Visibility Score** | Track progress across 5 dimensions: profile completeness, posting consistency, network growth, engagement, and applications |
+### Step 1 — Deploy the Worker
+
+1. Go to [dash.cloudflare.com](https://dash.cloudflare.com) → **Workers & Pages** → **Create**
+2. Click **Create Worker**
+3. Delete the placeholder code, paste the contents of [`worker.js`](./worker.js), click **Deploy**
+4. Copy your worker URL — it looks like:  
+   `https://career-compass-proxy.YOUR-NAME.workers.dev`
+
+### Step 2 — Add your Anthropic API key
+
+1. In your Worker dashboard → **Settings** → **Variables**
+2. Under **Environment Variables** click **Add variable**:
+   - **Variable name:** `ANTHROPIC_API_KEY`
+   - **Value:** your key from [console.anthropic.com](https://console.anthropic.com)
+   - Click **Encrypt** then **Save**
+
+### Step 3 — Connect the app
+
+1. Open [amantalwar04.github.io/career-compass](https://amantalwar04.github.io/career-compass)
+2. On the **Profile** tab, paste your worker URL into the setup banner
+3. Click **Save** — AI features are now live ✅
+
+The URL is saved in your browser so you only need to do this once per device.
 
 ---
 
-## Tech Stack
+## What it does
 
-- **Pure HTML / CSS / Vanilla JS** — no build step, no framework
-- **Claude Sonnet 4** via Anthropic API for all AI features
-- **Font Awesome 6** for icons
-- **Google Fonts** — Playfair Display + DM Sans
+| Tab | Feature |
+|---|---|
+| **Profile** | Enter your background, skills, and target role. Get AI career coaching instantly. |
+| **Roles** | Curated opportunities with profile match scores. AI advice for each role. |
+| **LinkedIn** | Generate posts, articles, newsletters, or carousel hooks tailored to your voice. |
+| **Planner** | Weekly calendar nudges + personalized Mon–Fri AI action plan. |
+| **Progress** | Visibility score across 5 dimensions with AI growth coaching. |
 
 ---
 
@@ -33,33 +52,21 @@ Career Compass is a single-page web app that helps professionals at any stage:
 
 ```
 career-compass/
-├── index.html          # Main app shell
-├── src/
-│   ├── css/
-│   │   └── styles.css  # All styles (CSS variables, components)
-│   └── js/
-│       └── app.js      # All interactivity + Claude API calls
+├── index.html    # Full app — all HTML, CSS, JS in one file
+├── worker.js     # Cloudflare Worker proxy (deploy separately)
 └── README.md
 ```
 
 ---
 
-## Local Development
+## Tech Stack
 
-No build step needed — just open `index.html` in your browser.
-
-```bash
-git clone https://github.com/amantalwar04/career-compass.git
-cd career-compass
-open index.html
-```
+- **HTML / CSS / Vanilla JS** — zero build step, zero dependencies
+- **Claude Sonnet 4** via Anthropic API
+- **Cloudflare Workers** — free serverless proxy for CORS + API key security
+- **Font Awesome 6** · **Google Fonts** (Playfair Display + DM Sans)
+- **GitHub Pages** — static hosting on `main` branch
 
 ---
 
-## Deployment
-
-The app is deployed via **GitHub Pages** from the `gh-pages` branch.
-
----
-
-Built with Claude by Anthropic.
+Built with ❤️ using [Claude](https://claude.ai) by Anthropic.
